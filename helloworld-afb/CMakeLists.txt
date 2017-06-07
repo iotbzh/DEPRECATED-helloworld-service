@@ -18,7 +18,8 @@
 PROJECT_TARGET_ADD(hello-world)
 
 	# Define project Targets
-	add_library(${TARGET_NAME} MODULE *.c)
+	file(GLOB sourcelist "*.c")
+	add_library(${TARGET_NAME} MODULE ${sourcelist})
 
 	# Binder exposes a unique public entry point
 	SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES
