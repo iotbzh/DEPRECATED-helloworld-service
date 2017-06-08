@@ -23,11 +23,15 @@ TODO
 
 ## Deploy
 
-### Native Linux
-
-TODO
-
 ### AGL
+
+```
+scp package/*.wgt root@<your-board-ip>:/tmp
+ssh root@<your-board-ip> afm-util install /tmp/*.wgt
+ssh root@<your-board-ip> afm-util start yourappname@x.y
+```
+
+### Native Linux
 
 TODO
 
