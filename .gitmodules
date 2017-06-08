@@ -1,0 +1,3 @@
+[submodule "app-templates"]
+	path = conf.d/default
+	url = https://gerrit.automotivelinux.org/gerrit/p/apps/app-templates.git
