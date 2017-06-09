@@ -82,7 +82,7 @@ set(LD_LIBRARY_PATH ${CMAKE_INSTALL_PREFIX}/lib64 ${CMAKE_INSTALL_PREFIX}/lib)
 
 # Optional location for config.xml.in
 # -----------------------------------
-set(WIDGET_CONFIG_TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/conf.d/config.xml.in)
+set(WIDGET_CONFIG_TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/conf.d/wgt/config.xml.in)
 
 # Mandatory widget Mimetype specification
 # --------------------------------------------------
