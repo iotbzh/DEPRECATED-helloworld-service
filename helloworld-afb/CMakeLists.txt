@@ -15,7 +15,7 @@
 ###########################################################################
 
 # Add target to project dependency list
-PROJECT_TARGET_ADD(hello-world)
+PROJECT_TARGET_ADD(helloworld)
 
 	# Define project Targets
 	file(GLOB sourcelist "*.c")
