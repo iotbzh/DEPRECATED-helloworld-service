@@ -12,7 +12,7 @@ git submodule update --recursive --init
 ## Build & Install for AGL
 
 ```
-conf.d/default/autobuild/agl/autobuild.mk package
+conf.d/app-templates/autobuild/agl/autobuild.mk package
 ```
 
 ## Build & Install for 'native' Linux distros (Fedora, openSUSE, Debian, Ubuntu, ...)
