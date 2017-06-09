@@ -26,7 +26,7 @@ set(PROJECT_URL "https://github.com/iotbzh/helloworld-service")
 set(PROJECT_ICON "icon.png")
 set(PROJECT_AUTHOR "Stephane Desneux")
 set(PROJECT_AUTHOR_MAIL "sdx@iot.bzh")
-set(PROJECT_LICENCE "APL2.0")
+set(PROJECT_LICENSE "APL2.0")
 set(PROJECT_LANGUAGES,"C")
 
 # Where are stored default templates files from submodule or subtree app-templates in your project tree
