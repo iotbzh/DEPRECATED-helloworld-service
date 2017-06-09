@@ -100,10 +100,10 @@ set(WIDGET_TYPE application/vnd.agl.service)
 # at launch time by the application framework
 #
 # !IMPORTANT! : Service Widget Mimetype has to specified
-# the WIDGET_ENTRY_POINT "lib" which is the default directory
-# that holds the bindings.
+# the WIDGET_ENTRY_POINT can then be any file 
+# "config.xml" is a good choice as always present and constant
 #
-set(WIDGET_ENTRY_POINT lib)
+set(WIDGET_ENTRY_POINT config.xml)
 
 # Optional dependencies order
 # ---------------------------
