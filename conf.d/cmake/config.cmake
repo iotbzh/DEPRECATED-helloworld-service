@@ -40,11 +40,16 @@ set(PROJECT_APP_TEMPLATES_DIR "conf.d/app-templates")
 # Where are stored data for your application. Pictures, static resources must be placed in that folder.
 # set(PROJECT_RESOURCES "data")
 
+# Which directories inspect to find CMakeLists.txt target files
+# set(PROJECT_SRC_DIR_PATTERN "*")
+
 # Compilation Mode (DEBUG, RELEASE)
 # ----------------------------------
 set(CMAKE_BUILD_TYPE "DEBUG")
 
 # Kernel selection if needed. Impose a minimal version.
+# NOTE FOR NOW IT CHECKS KERNEL Yocto SDK Kernel version
+# else only HOST VERSION
 # -----------------------------------------------
 #set (kernel_minimal_version 4.8)
 
@@ -56,8 +61,9 @@ set (gcc_minimal_version 4.9)
 # -----------------------------
 set (PKG_REQUIRED_LIST
 	json-c
-	libsystemd
+	libsystemd>=222
 	afb-daemon
+	libmicrohttpd>=0.9.55
 )
 
 # Static constante definition
@@ -71,7 +77,7 @@ set(CMAKE_CXX_FLAGS "")
 # Print a helper message when every thing is finished
 # ----------------------------------------------------
 set(CLOSING_MESSAGE "Test with: afb-daemon --rootdir=\$\$(pwd)/package --ldpaths=\$\$(pwd)/package/lib --port=1234 --roothttp=\$\$(pwd)/package/htdocs --tracereq=common --token=\"1\" --verbose")
-set(WIDGET_MESSAGE "Install widget file using in the target : afm-util install ${PROJECT_NAME}.wgt")
+set(PACKAGE_MESSAGE "Install widget file using in the target : afm-util install ${PROJECT_NAME}.wgt")
 
 # (BUG!!!) as PKG_CONFIG_PATH does not work [should be an env variable]
 # ---------------------------------------------------------------------
@@ -83,24 +89,27 @@ set(LD_LIBRARY_PATH ${CMAKE_INSTALL_PREFIX}/lib64 ${CMAKE_INSTALL_PREFIX}/lib)
 # -----------------------------------
 set(WIDGET_CONFIG_TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/conf.d/wgt/config.xml.in)
 
-# Mandatory widget Mimetype specification
-# --------------------------------------------------
+# Mandatory widget Mimetype specification of the main unit
+# --------------------------------------------------------------------------
 # Choose between :
-# - application/vnd.agl.service
-# - application/vnd.agl.native
-# - application/x-executable
-# - text/html
+#- text/html : HTML application,
+#	content.src designates the home page of the application
 #
-set(WIDGET_TYPE application/vnd.agl.service)
+#- application/vnd.agl.native : AGL compatible native,
+#	content.src designates the relative path of the binary.
+#
+# - application/vnd.agl.service: AGL service, content.src is not used.
+#
+#- ***application/x-executable***: Native application,
+#	content.src designates the relative path of the binary.
+#	For such application, only security setup is made.
+#
+set(WIDGET_TYPE MimeType_Not_Set)
 
-# Mandatory Widget entry point file.
-# ----------------------------------------------------
-# This is the file that will be executed, loaded,...
-# at launch time by the application framework
-#
-# !IMPORTANT! : Service Widget Mimetype has to specified
-# the WIDGET_ENTRY_POINT can then be any file 
-# "config.xml" is a good choice as always present and constant
+# Mandatory Widget entry point file of the main unit
+# --------------------------------------------------------------
+# This is the file that will be executed, loaded,
+# at launch time by the application framework.
 #
 set(WIDGET_ENTRY_POINT config.xml)
 
@@ -133,3 +142,8 @@ set(WIDGET_ENTRY_POINT config.xml)
 #------------------------------------------------------------
 #set(AFB_TOKEN   ""      CACHE PATH "Default AFB_TOKEN")
 #set(AFB_REMPORT "1234" CACHE PATH "Default AFB_TOKEN")
+
+# This include is mandatory and MUST happens at the end
+# of this file, else you expose you to unexpected behavior
+# -----------------------------------------------------------
+include(${PROJECT_APP_TEMPLATES_DIR}/cmake/common.cmake)
