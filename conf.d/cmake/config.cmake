@@ -135,7 +135,7 @@ set(WIDGET_ENTRY_POINT config.xml)
 
 # Optional force package prefix generation, like widget
 # -----------------------------------------------------
-# set(PACKAGE_PREFIX DestinationPath)
+# set(PKG_PREFIX DestinationPath)
 
 # Optional Application Framework security token
 # and port use for remote debugging.

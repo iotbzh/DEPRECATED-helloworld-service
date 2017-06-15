@@ -2,3 +2,4 @@ build
 package
 .stfolder
 .*.sw*
+*.tar.gz
