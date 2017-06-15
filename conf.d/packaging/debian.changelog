@@ -1,0 +1,5 @@
+agl-helloworld-service (1.0-0) UNRELEASED; urgency=low
+
+  * init build
+
+ -- Stephane Desneux <sdx@iot.bzh>  Mon, 25 Dec 2007 10:50:38 +0100
