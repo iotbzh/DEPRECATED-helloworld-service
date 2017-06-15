@@ -18,6 +18,7 @@
 #include <string.h>
 #include <json-c/json.h>
 
+#define AFB_BINDING_VERSION 1
 #include <afb/afb-binding.h>
 
 static void ping(struct afb_req request, json_object *jresp, const char *tag)
