@@ -45,7 +45,6 @@ set(PROJECT_APP_TEMPLATES_DIR "conf.d/app-templates")
 set(CMAKE_BUILD_TYPE "DEBUG")
 
 # Kernel selection if needed. Impose a minimal version.
-# NOTE FOR NOW IT CHECKS KERNEL HOST VERSION
 # -----------------------------------------------
 #set (kernel_minimal_version 4.8)
 
