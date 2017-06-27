@@ -17,8 +17,8 @@
 ###########################################################################
 
 
-Name:    
-Version: icon.png
+Name:    agl-helloworld-service
+Version: 1.0
 Release: 1
 License: APL2.0
 Summary: The name says it all!
@@ -27,6 +27,10 @@ Source0: %{name}_%{version}.orig.tar.gz
 
 BuildRequires: cmake
 BuildRequires: gcc gcc-c++
+BuildRequires: pkgconfig(json-c)
+BuildRequires: pkgconfig(libsystemd) >= 222
+BuildRequires: pkgconfig(afb-daemon)
+BuildRequires: pkgconfig(libmicrohttpd) >= 0.9.55
 
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-build
