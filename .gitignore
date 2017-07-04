@@ -3,4 +3,3 @@ package
 .stfolder
 .*.sw*
 *.tar.gz
-autobuild
