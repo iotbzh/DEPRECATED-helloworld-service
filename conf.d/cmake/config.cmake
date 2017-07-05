@@ -70,10 +70,6 @@ set (PKG_REQUIRED_LIST
 # -----------------------------
 add_compile_options()
 
-# LANG Specific compile flags set for all build types
-set(CMAKE_C_FLAGS "")
-set(CMAKE_CXX_FLAGS "")
-
 # Print a helper message when every thing is finished
 # ----------------------------------------------------
 set(CLOSING_MESSAGE "Test with: afb-daemon --rootdir=\$\$(pwd)/package --ldpaths=\$\$(pwd)/package/lib --port=1234 --roothttp=\$\$(pwd)/package/htdocs --tracereq=common --token=\"1\" --verbose")
