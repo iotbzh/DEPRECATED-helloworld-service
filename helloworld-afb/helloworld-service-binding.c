@@ -18,7 +18,7 @@
 #include <string.h>
 #include <json-c/json.h>
 
-#define AFB_BINDING_VERSION 1
+#define AFB_BINDING_VERSION 2
 #include <afb/afb-binding.h>
 
 static void ping(struct afb_req request, json_object *jresp, const char *tag)
@@ -31,23 +31,21 @@ static void ping(struct afb_req request, json_object *jresp, const char *tag)
 static void pingSample (struct afb_req request)
 {
 	ping(request, json_object_new_string ("Make the World great again!"), "pingSample");
+	AFB_NOTICE("Verbosity macro at level notice invoked at ping invocation");
 }
 
-static const struct afb_verb_desc_v1 verbs[]= {
-  {"ping"     , AFB_SESSION_NONE, pingSample  , "Ping the binder"},
+static const struct afb_verb_v2 verbs[]= {
+  { .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = NULL},
   {NULL}
 };
 
-static const struct afb_binding plugin_desc = {
-	.type = AFB_BINDING_VERSION_1,
-	.v1 = {
-		.info = "helloworld service",
-		.prefix = "helloworld",
-		.verbs = verbs
-	}
+const struct afb_binding_v2 afbBindingV2 = {
+	.api = "helloworld",
+	.specification = NULL,
+	.verbs = verbs,
+	.preinit = NULL,
+	.init = NULL,
+	.onevent = NULL,
+	.noconcurrency = 0
 };
 
-const struct afb_binding *afbBindingV1Register (const struct afb_binding_interface *itf)
-{
-	return &plugin_desc;
-}
