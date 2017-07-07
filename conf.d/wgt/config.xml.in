@@ -13,5 +13,3 @@
      <param name="lib/afb-helloworld.so" value="local" />
   </feature>
 </widget>
-
-
