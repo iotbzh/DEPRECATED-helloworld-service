@@ -34,8 +34,14 @@ static void pingSample (struct afb_req request)
 	AFB_NOTICE("Verbosity macro at level notice invoked at ping invocation");
 }
 
+static const struct afb_auth _afb_auths_v2_monitor[] = {
+    { .type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:set" },
+    { .type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:get" },
+    { .type = afb_auth_Or, .first = &_afb_auths_v2_monitor[1], .next = &_afb_auths_v2_monitor[0] }
+};
+
 static const struct afb_verb_v2 verbs[]= {
-  { .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = NULL},
+  { .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = &_afb_auths_v2_monitor[1]},
   {NULL}
 };
 
