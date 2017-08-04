@@ -21,7 +21,7 @@ cd helloworld-service
 ## Build for 'native' Linux distros (Fedora, openSUSE, Debian, Ubuntu, ...)
 
 ```bash
-./conf.d/autobuild/agl/autobuild package
+./conf.d/autobuild/linux/autobuild package
 ```
 
 You can also use binary package from OBS: [opensuse.org/LinuxAutomotive][opensuse.org/LinuxAutomotive]
