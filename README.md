@@ -71,7 +71,7 @@ curl http://localhost:${PORT}/api/helloworld/ping 2>/dev/null | python -m json.t
 
 ```
 
-# Activate security
+# Activate authentification security
 
 To test auth just switch the line:
 
