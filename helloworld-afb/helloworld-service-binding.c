@@ -21,31 +21,60 @@
 #define AFB_BINDING_VERSION 2
 #include <afb/afb-binding.h>
 
-static void ping(struct afb_req request, json_object *jresp, const char *tag)
+static void pingSample(struct afb_req request)
 {
 	static int pingcount = 0;
-	json_object *query = afb_req_json(request);
-	afb_req_success_f(request, jresp, "Ping Binder Daemon tag=%s count=%d query=%s", tag, ++pingcount, json_object_to_json_string(query));
+
+	afb_req_success_f(request, json_object_new_int(pingcount), "Ping count = %d", pingcount);
+
+	AFB_NOTICE("Verbosity macro at level notice invoked at ping invocation count = %d", pingcount);
+
+	pingcount++;
 }
 
-static void pingSample (struct afb_req request)
+// testArgsSample - return success only if argument is set to {"cezam": "open"}
+static void testArgsSample(struct afb_req request)
 {
-	ping(request, json_object_new_string ("Make the World great again!"), "pingSample");
-	AFB_NOTICE("Verbosity macro at level notice invoked at ping invocation");
+	json_object *tmpJ;
+	json_object *res = json_object_new_object();
+	json_object *queryJ = afb_req_json(request);
+
+	json_bool success = json_object_object_get_ex(queryJ, "cezam", &tmpJ);
+	if (!success) {
+		afb_req_fail_f(request, "ERROR", "key cezam not found in '%s'", json_object_get_string(queryJ));
+		return;
+	}
+
+	if (json_object_get_type(tmpJ) != json_type_string) {
+		afb_req_fail(request, "ERROR", "key cezam not a string");
+		return;
+	}
+
+	if (strncmp(json_object_get_string(tmpJ), "open", 4) == 0) {
+		json_object_object_add(res, "code", json_object_new_int(123456789));
+		afb_req_success(request, res, NULL);
+		return;
+	}
+
+	afb_req_fail_f(request, "ERROR", "value of cezam (%s) is not the expected one.",
+				   json_object_get_string(queryJ));
 }
 
 static const struct afb_auth _afb_auths_v2_monitor[] = {
-    { .type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:set" },
-    { .type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:get" },
-    { .type = afb_auth_Or, .first = &_afb_auths_v2_monitor[1], .next = &_afb_auths_v2_monitor[0] }
+	{.type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:set"},
+	{.type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:get"},
+	{.type = afb_auth_Or, .first = &_afb_auths_v2_monitor[1], .next = &_afb_auths_v2_monitor[0]}
 };
 
-static const struct afb_verb_v2 verbs[]= {
-  /*Without security*/
-  { .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = NULL},
-  /*With security "urn:AGL:permission:monitor:public:get"*/
-  /*{ .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = &_afb_auths_v2_monitor[1]},*/
-  {NULL}
+static const struct afb_verb_v2 verbs[] = {
+	/*Without security*/
+	{.verb = "ping", .session = AFB_SESSION_NONE, .callback = pingSample, .auth = NULL},
+
+	/*With security "urn:AGL:permission:monitor:public:get"*/
+	/*{ .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = &_afb_auths_v2_monitor[1]},*/
+
+	{.verb = "testargs", .session = AFB_SESSION_NONE, .callback = testArgsSample, .auth = NULL},
+	{NULL}
 };
 
 const struct afb_binding_v2 afbBindingV2 = {
@@ -57,4 +86,3 @@ const struct afb_binding_v2 afbBindingV2 = {
 	.onevent = NULL,
 	.noconcurrency = 0
 };
-
