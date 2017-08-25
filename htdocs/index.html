@@ -1,0 +1,37 @@
+<html>
+<head>
+    <title>Simple COntroller Test</title>
+    <link rel="stylesheet" href="AudioBinding.css">
+    <script type="text/javascript" src="AFB-websock.js"></script>
+    <script type="text/javascript" src="AudioBinding.js"></script>
+</head>
+
+<body onload="init('hal_registry','alsacore', 'hallist')">
+
+    <h1>Simple Control Test</h1>
+    <button id="connected" onclick="init('hal_registry','alsacore', 'hallist')">Binder WS Fail</button> 
+    <button id="mnitoring" onclick="window.open('/monitoring/monitor.html','_monitor_ctl')">Debug/Monitoring</a></button>
+    <br><br>
+
+
+    <ol>
+
+    <li><button onclick="callbinder('control','dispatch' ,{'target':'Button-Happy',args:{'var1':1234, 'var2':4567}});">Button Happy (Granted)</button></li>
+    <li><button onclick="callbinder('control','dispatch' ,{'target':'Button-UnHappy',args:{'var1':1234, 'var2':4567}});">Button UnHappy (Refused)</button></li>
+    <br>
+    <li><button onclick="callbinder('control','request'  ,{'target':'_Simple_Timer_Test',args:{'label':'myTimer', 'delay':3000, 'count':10}});">Start Events Timer</button></li>
+    <br>
+    <li><button onclick="callbinder('control','request'  ,{'target':'_Simple_Echo_Args', 'args':{speed:20}});">Simple Echo args</button></li>
+    <li><button onclick="callbinder('control','request'  ,{'target':'_Simple_Monitor_Call', 'args':{verbosity:true}});">Service Call to Monitor</button></li>
+    <br>
+    <li><button onclick="callbinder('control','debuglua' ,{'target':'helloworld', args:{'arg1':'abcd', 'next':7890, 'last':[1,2,3,4]}});">Lua Debug Script</button></li>
+
+    </ol>
+
+    <div id="main" style="visibility:hidden">
+    <ol>
+    <li>Question <pre id="question"></pre>
+    <li>Response <pre id="output"></pre>
+    <li>Events: <pre id="outevt"></pre>
+    </ol>
+    </div>

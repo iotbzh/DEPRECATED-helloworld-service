@@ -1,5 +1,6 @@
-build
+build*
 package
+nbproject/private
 .stfolder
 .*.sw*
 *.tar.gz
