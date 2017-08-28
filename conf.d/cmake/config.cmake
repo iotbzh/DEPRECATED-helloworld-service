@@ -19,7 +19,7 @@
 # Project Info
 # ------------------
 set(PROJECT_NAME helloworld-service)
-set(PROJECT_VERSION "0.1")
+set(PROJECT_VERSION "1.0")
 set(PROJECT_PRETTY_NAME "Helloworld for AGL")
 set(PROJECT_DESCRIPTION "Provide an AGL Helloworld Binding")
 set(PROJECT_URL "https://github.com/iotbzh/helloworld-service")
