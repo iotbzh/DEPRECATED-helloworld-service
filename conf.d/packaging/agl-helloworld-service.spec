@@ -1,7 +1,7 @@
 ###########################################################################
 # Copyright 2015, 2016, 2017 IoT.bzh
 #
-# author: Stephane Desneux <sdx@iot.bzh>
+# author: Iot-Team <secretaria@iot.bzh>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,9 @@
 Name:    agl-helloworld-service
 Version: 1.0
 Release: 1
+Group:   AGL
 License: APL2.0
-Summary: The name says it all!
+Summary: Provide an AGL Helloworld Binding
 Url:     https://github.com/iotbzh/helloworld-service
 Source0: %{name}_%{version}.orig.tar.gz
 
@@ -39,14 +40,14 @@ BuildRoot:     %{_tmppath}/%{name}-%{version}-build
 %define __cmake cmake
 
 %description
-The name says it all!
+Provide an AGL Helloworld Binding
 
 %prep
 %setup -q
 
 %build
-%cmake -DBINDINGS_INSTALL_PREFIX:PATH=%{_libdir}
-%__make %{?_smp_mflags}
+%cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_libdir}
+make %{?_smp_mflags}
 
 %install
 CURDIR=$(pwd)

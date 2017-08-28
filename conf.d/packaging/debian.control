@@ -1,18 +1,19 @@
 Priority: optional
-Maintainer: Stephane Desneux <sdx@iot.bzh>
+Maintainer: Iot-Team <secretaria@iot.bzh>
 Source: agl-helloworld-service
-Build-Depends: debhelper (>= 5),	
+Build-Depends: debhelper (>= 5),
+ pkg-config,
  cmake,
  gcc,
  g++,
  libjson-c-dev ,
  libsystemd-dev  (>= 222),
  agl-app-framework-binder-dev ,
- libmicrohttpd-dev  (>= 0.9.55)
+ agl-libmicrohttpd-dev  (>= 0.9.55)
 Standards-Version: 3.8.2
 Homepage: https://github.com/iotbzh/helloworld-service
 
 Package: agl-helloworld-service
 Section: libs
 Architecture: any
-Description: The name says it all!
+Description: Provide an AGL Helloworld Binding
