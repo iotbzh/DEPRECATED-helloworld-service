@@ -68,8 +68,38 @@ afb-daemon --port=${PORT}  --ldpaths=/opt/AGL/helloworld-service/lib/
 curl http://localhost:${PORT}/api/helloworld/ping
 #For a nice display
 curl http://localhost:${PORT}/api/helloworld/ping 2>/dev/null | python -m json.tool
-
 ```
+
+### Events tests with alsacore on Native Linux
+
+```bash
+# Clone and build afb-aaaa binding including alsacore 
+# (see https://github.com/iotbzh/afb-aaaa for more details)
+git clone https://github.com/iotbzh/afb-aaaa
+cd afb-aaaa && mkdir build && cd build
+cmake ..
+make
+
+# Start aaaa binder and export alsacore api using --ws-server option
+afb-daemon --port=1234 --workdir=. --roothttp=../htdocs --token= --verbose --monitoring --ldpaths=package/lib --ws-server=unix:/var/tmp/afb-ws/alsacore
+```
+
+```bash
+# Now you can start an helloworld-service binder that import alsacore api using --ws-client option
+afb-daemon --port=8000 --workdir=. --roothttp=../htdocs --token= --verbose --monitoring --ldpaths=package/lib --ws-client=unix:/var/tmp/afb-ws/alsacore
+```
+
+To test events, just change the volume of your default sound card using alsamixer
+
+>**Note**: Default sound card selection is hardcoded using 'default' keyword into
+helloworld-server source code.
+If you want to change it and set for example 'hw:0', edit following line of 
+`helloworld-service-binding.c` :
+```
+-	err = wrap_json_pack(&queryJ, "{s:s,s:i}", "devid", "default", "mode", 1);
++	err = wrap_json_pack(&queryJ, "{s:s,s:i}", "devid", "hw:0", "mode", 1);
+```
+
 
 # Activate authentification security
 

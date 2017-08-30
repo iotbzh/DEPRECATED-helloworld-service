@@ -20,6 +20,9 @@
 
 #define AFB_BINDING_VERSION 2
 #include <afb/afb-binding.h>
+#include <wrap-json.h>
+
+static afb_event helloEvt;
 
 static void pingSample(struct afb_req request)
 {
@@ -27,7 +30,11 @@ static void pingSample(struct afb_req request)
 
 	afb_req_success_f(request, json_object_new_int(pingcount), "Ping count = %d", pingcount);
 
-	AFB_NOTICE("Verbosity macro at level notice invoked at ping invocation count = %d", pingcount);
+	AFB_DEBUG("Helloworld Ping Count = %d", pingcount);
+
+	if (!(pingcount % 2)) AFB_NOTICE("Helloworld Ping Count = %d", pingcount);
+	if (!(pingcount % 3)) AFB_WARNING("Helloworld Ping Count = %d", pingcount);
+	if (!(pingcount % 4)) AFB_ERROR("Helloworld Ping Count = %d", pingcount);
 
 	pingcount++;
 }
@@ -60,6 +67,61 @@ static void testArgsSample(struct afb_req request)
 				   json_object_get_string(queryJ));
 }
 
+static void subscribe(afb_req request)
+{
+	int err;
+	json_object *queryJ = NULL, *resultJ;
+
+	// make query to connect to alsacore
+	err = wrap_json_pack(&queryJ, "{s:s,s:i}", "devid", "default", "mode", 1);
+	if (err) {
+		afb_req_fail(request, "Fail-Event", "Fail to Pack Query");
+		goto OnErrorExit;
+	}
+
+	// call remote API
+	err = afb_service_call_sync("alsacore", "subscribe", queryJ, &resultJ);
+	if (err) {
+		afb_req_fail_f(request, "Fail-Event", "Fail Connect to alsacore, err=%s", json_object_get_string(resultJ));
+		goto OnErrorExit;
+	}
+
+	// subscribe hello client to hello event
+	afb_req_subscribe(request, helloEvt);
+	if (err) {
+		afb_req_fail(request, "Fail-Event", "Fail to subscribe to helloEvt");
+		goto OnErrorExit;
+	}
+
+	afb_req_success(request, NULL, "Subscribe-Event");
+	return;
+
+OnErrorExit:
+	return;
+}
+
+static void HelloEvt(const char *evtLabel, json_object *alsaEvtJ)
+{
+
+	// Just push Alsa event to hello client
+	int nbClients = afb_event_push(helloEvt, alsaEvtJ);
+	if (nbClients == 0) {
+		AFB_WARNING("fail to push helloEvt (no subscriber)");
+	}
+}
+
+static int HelloInit(void)
+{
+	helloEvt = afb_daemon_make_event("hello-Evt");
+
+	int err = afb_daemon_require_api("alsacore", 1);
+	if (err) {
+		AFB_WARNING("DISPATCH-LOAD-CONFIG:REQUIRE 'alsacore' Fail");
+		return 1;
+	}
+	return 0;
+}
+
 static const struct afb_auth _afb_auths_v2_monitor[] = {
 	{.type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:set"},
 	{.type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:get"},
@@ -69,6 +131,7 @@ static const struct afb_auth _afb_auths_v2_monitor[] = {
 static const struct afb_verb_v2 verbs[] = {
 	/*Without security*/
 	{.verb = "ping", .session = AFB_SESSION_NONE, .callback = pingSample, .auth = NULL},
+	{.verb = "subscribe", .session = AFB_SESSION_NONE, .callback = subscribe, .auth = NULL},
 
 	/*With security "urn:AGL:permission:monitor:public:get"*/
 	/*{ .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = &_afb_auths_v2_monitor[1]},*/
@@ -82,7 +145,7 @@ const struct afb_binding_v2 afbBindingV2 = {
 	.specification = NULL,
 	.verbs = verbs,
 	.preinit = NULL,
-	.init = NULL,
-	.onevent = NULL,
+	.init = HelloInit,
+	.onevent = HelloEvt,
 	.noconcurrency = 0
 };

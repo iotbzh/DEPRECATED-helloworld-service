@@ -31,6 +31,8 @@ PROJECT_TARGET_ADD(helloworld)
         OUTPUT_NAME ${TARGET_NAME}
     )
 
-    TARGET_LINK_LIBRARIES(${TARGET_NAME}
+	# Library dependencies
+	TARGET_LINK_LIBRARIES(${TARGET_NAME}
+		afb-utilities
 	    ${link_libraries}
-    )
+	)

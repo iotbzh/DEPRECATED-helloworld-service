@@ -91,6 +91,9 @@ function init(elemid, api, verb, query) {
 		document.getElementById("main").style.visibility = "visible";
 		document.getElementById("connected").innerHTML = "Binder WS Active";
 		document.getElementById("connected").style.background = "lightgreen";
+
+		callbinder('helloworld', 'subscribe', '');
+
 		ws.onevent("*", log.event);
 	}
 

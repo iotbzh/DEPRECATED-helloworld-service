@@ -1,3 +1,6 @@
 [submodule "app-templates"]
 	path = conf.d/app-templates
 	url = https://gerrit.automotivelinux.org/gerrit/p/apps/app-templates.git
+[submodule "afb-utilities"]
+	path = afb-utilities
+	url = git@github.com:iotbzh/afb-utilities
