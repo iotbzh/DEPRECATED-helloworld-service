@@ -2,6 +2,30 @@
 
 A binding example for AGL
 
+## Pre-requisites
+
+Please follow [this guide](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/host-configuration/docs/1_Prerequisites.html)
+to add the AGL-Master repository to your distribution and then install the
+cmake module using your distribution package manager.
+
+* **Debian/Ubuntu**
+
+```bash
+sudo apt-get install agl-cmake-apps-module-bin
+```
+
+* **openSUSE**
+
+```bash
+sudo zypper install agl-cmake-apps-module
+```
+
+* **Fedora**
+
+```bash
+sudo dnf install agl-cmake-apps-module
+```
+
 ## Setup 
 
 ```bash
