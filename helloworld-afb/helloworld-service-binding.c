@@ -18,22 +18,22 @@
 #include <string.h>
 #include <json-c/json.h>
 
-#define AFB_BINDING_VERSION 2
+#define AFB_BINDING_VERSION 3
 #include <afb/afb-binding.h>
 
-static void pingSample(struct afb_req request)
+static void pingSample(afb_req_t request)
 {
 	static int pingcount = 0;
 
 	afb_req_success_f(request, json_object_new_int(pingcount), "Ping count = %d", pingcount);
 
-	AFB_NOTICE("Verbosity macro at level notice invoked at ping invocation count = %d", pingcount);
+	AFB_API_NOTICE(afbBindingV3root, "Verbosity macro at level notice invoked at ping invocation count = %d", pingcount);
 
 	pingcount++;
 }
 
 // testArgsSample - return success only if argument is set to {"cezam": "open"}
-static void testArgsSample(struct afb_req request)
+static void testArgsSample(afb_req_t request)
 {
 	json_object *tmpJ;
 	json_object *res = json_object_new_object();
@@ -66,7 +66,7 @@ static const struct afb_auth _afb_auths_v2_monitor[] = {
 	{.type = afb_auth_Or, .first = &_afb_auths_v2_monitor[1], .next = &_afb_auths_v2_monitor[0]}
 };
 
-static const struct afb_verb_v2 verbs[] = {
+static const afb_verb_t verbs[] = {
 	/*Without security*/
 	{.verb = "ping", .session = AFB_SESSION_NONE, .callback = pingSample, .auth = NULL},
 
@@ -77,7 +77,7 @@ static const struct afb_verb_v2 verbs[] = {
 	{NULL}
 };
 
-const struct afb_binding_v2 afbBindingV2 = {
+const afb_binding_t afbBindingExport = {
 	.api = "helloworld",
 	.specification = NULL,
 	.verbs = verbs,
