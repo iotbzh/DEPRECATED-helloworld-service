@@ -18,7 +18,7 @@
 
 # Project Info
 # ------------------
-set(PROJECT_NAME helloworld-service)
+set(PROJECT_NAME agl-service-helloworld)
 set(PROJECT_VERSION "1.0")
 set(PROJECT_PRETTY_NAME "Helloworld for AGL")
 set(PROJECT_DESCRIPTION "Provide an AGL Helloworld Binding")
@@ -28,6 +28,7 @@ set(PROJECT_AUTHOR "Iot-Team")
 set(PROJECT_AUTHOR_MAIL "secretaria@iot.bzh")
 set(PROJECT_LICENSE "APL2.0")
 set(PROJECT_LANGUAGES,"C")
+set(API_NAME "helloworld")
 
 # Where are stored default templates files from submodule or subtree app-templates in your project tree
 # relative to the root project directory
@@ -45,7 +46,7 @@ set(PROJECT_CMAKE_CONF_DIR "conf.d/cmake")
 
 # Compilation Mode (DEBUG, RELEASE)
 # ----------------------------------
-set(CMAKE_BUILD_TYPE "DEBUG")
+set(BUILD_TYPE "RELEASE")
 
 # Kernel selection if needed. You can choose between a
 # mandatory version to impose a minimal version.
@@ -106,7 +107,7 @@ set(PACKAGE_MESSAGE "Install widget file using in the target : afm-util install 
 
 # (BUG!!!) as PKG_CONFIG_PATH does not work [should be an env variable]
 # ---------------------------------------------------------------------
-set(CMAKE_INSTALL_PREFIX $ENV{HOME}/opt)
+set(INSTALL_PREFIX $ENV{HOME}/opt)
 set(CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX}/lib64/pkgconfig ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
 set(LD_LIBRARY_PATH ${CMAKE_INSTALL_PREFIX}/lib64 ${CMAKE_INSTALL_PREFIX}/lib)
 

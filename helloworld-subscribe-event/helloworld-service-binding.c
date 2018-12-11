@@ -21,15 +21,54 @@
 #define AFB_BINDING_VERSION 3
 #include <afb/afb-binding.h>
 
+static afb_event_t event;
+
 static void pingSample(afb_req_t request)
 {
 	static int pingcount = 0;
+	int listeners = 0;
 
-	afb_req_success_f(request, json_object_new_int(pingcount), "Ping count = %d", pingcount);
+	if(afb_event_is_valid(event))
+		listeners = afb_event_push(event, json_object_new_int(pingcount));
 
-	AFB_API_NOTICE(afbBindingV3root, "Verbosity macro at level notice invoked at ping invocation count = %d", pingcount);
+	afb_req_success_f(request, json_object_new_int(pingcount), "Ping count = %d, Event listeners = %d", pingcount, listeners);
+
+	AFB_API_NOTICE(afbBindingV3root, "Verbosity macro at level notice invoked at ping invocation, count = %d, event listeners = %d", pingcount, listeners);
 
 	pingcount++;
+}
+
+static void subscribeSample(afb_req_t request)
+{
+	// Event not valid ? then creating one.
+	if(! afb_event_is_valid(event))
+		event = afb_api_make_event(request->api, "PingCount");
+
+
+	if(afb_req_subscribe(request, event) < 0) {
+		afb_req_fail(request, "Error", "Subscription operation failed");
+		return;
+	}
+
+	afb_req_success(request, NULL, NULL);
+
+	AFB_API_NOTICE(request->api, "Verbosity macro at level notice invoked at subscribe invocation");
+}
+
+static void unsubscribeSample(afb_req_t request)
+{
+	if(! afb_event_is_valid(event)) {
+		afb_req_fail(request, "Invalid", "Event not valid");
+		return;
+	}
+
+	if(afb_req_unsubscribe(request, event) < 0) {
+		afb_req_fail(request, "Error", "Unsubscription operation failed");
+		return;
+	}
+
+	afb_req_success(request, NULL, NULL);
+	AFB_API_NOTICE(request->api, "Verbosity macro at level notice invoked at unsubscribe invocation");
 }
 
 // testArgsSample - return success only if argument is set to {"cezam": "open"}
@@ -60,10 +99,10 @@ static void testArgsSample(afb_req_t request)
 				   json_object_get_string(queryJ));
 }
 
-static const struct afb_auth _afb_auths_v2_monitor[] = {
+static const struct afb_auth _afb_auths_monitor[] = {
 	{.type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:set"},
 	{.type = afb_auth_Permission, .text = "urn:AGL:permission:monitor:public:get"},
-	{.type = afb_auth_Or, .first = &_afb_auths_v2_monitor[1], .next = &_afb_auths_v2_monitor[0]}
+	{.type = afb_auth_Or, .first = &_afb_auths_monitor[1], .next = &_afb_auths_monitor[0]}
 };
 
 static const afb_verb_t verbs[] = {
@@ -71,8 +110,10 @@ static const afb_verb_t verbs[] = {
 	{.verb = "ping", .session = AFB_SESSION_NONE, .callback = pingSample, .auth = NULL},
 
 	/*With security "urn:AGL:permission:monitor:public:get"*/
-	/*{ .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = &_afb_auths_v2_monitor[1]},*/
+	/*{ .verb = "ping"     , .session = AFB_SESSION_NONE, .callback = pingSample  , .auth = &_afb_auths_monitor[1]},*/
 
+	{.verb = "subscribe", .session = AFB_SESSION_NONE, .callback = subscribeSample, .auth = NULL},
+	{.verb = "unsubscribe", .session = AFB_SESSION_NONE, .callback = unsubscribeSample, .auth = NULL},
 	{.verb = "testargs", .session = AFB_SESSION_NONE, .callback = testArgsSample, .auth = NULL},
 	{NULL}
 };
@@ -84,5 +125,9 @@ const afb_binding_t afbBindingExport = {
 	.preinit = NULL,
 	.init = NULL,
 	.onevent = NULL,
+	.userdata = NULL,
+	.provide_class = NULL,
+	.require_class = NULL,
+	.require_api = NULL,
 	.noconcurrency = 0
 };
