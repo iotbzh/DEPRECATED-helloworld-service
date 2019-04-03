@@ -4,9 +4,16 @@ A binding example for AGL
 
 ## Pre-requisites
 
-Please follow [this guide](http://docs.automotivelinux.org/docs/devguides/en/dev/reference/host-configuration/docs/1_Prerequisites.html)
-to add the AGL-Master repository to your distribution and then install the
-cmake module using your distribution package manager.
+Please follow [this guide](http://docs.automotivelinux.org/master/docs/devguides/en/dev/reference/host-configuration/docs/1_Prerequisites.html)
+to add the AGL-Master repository to your distribution.  In order to load these files into the current shell script, use the following command :
+
+* **Debian/Ubuntu**
+
+```bash
+source /etc/profile.d/AGL-app-framework-binder.sh
+```
+
+Then install the cmake module using your distribution package manager.
 
 * **Debian/Ubuntu**
 
@@ -25,8 +32,47 @@ sudo zypper install agl-cmake-apps-module
 ```bash
 sudo dnf install agl-cmake-apps-module
 ```
+Because the helloworld-service binding uses json, the following package has to be installed.
 
-## Setup 
+* **Debian/Ubuntu**
+
+```bash
+sudo apt-get install libjson-c-dev
+```
+
+* **openSUSE**
+
+```bash
+sudo zypper install libjson-c-dev
+```
+
+* **Fedora**
+
+```bash
+sudo dnf install libjson-c-dev
+```
+
+Binder and client communicate through HTTP protocol :
+
+* **Debian/Ubuntu**
+
+```bash
+sudo apt-get install agl-libmicrohttpd-dev
+```
+
+* **openSUSE**
+
+```bash
+sudo zypper install agl-libmicrohttpd-dev
+```
+
+* **Fedora**
+
+```bash
+sudo dnf install agl-libmicrohttpd-dev
+```
+
+## Setup
 
 ```bash
 git clone --recursive https://github.com/iotbzh/helloworld-service
