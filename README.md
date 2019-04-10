@@ -10,7 +10,7 @@ to add the AGL-Master repository to your distribution.  In order to load these f
 * **Debian/Ubuntu**
 
 ```bash
-source /etc/profile.d/AGL-app-framework-binder.sh
+source /etc/profile.d/agl-app-framework-binder.sh
 ```
 
 Then install the cmake module using your distribution package manager.
