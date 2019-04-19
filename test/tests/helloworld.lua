@@ -19,41 +19,20 @@
 --]]
 
 function _callback(responseJ)
-  _AFT.assertStrContains(responseJ.response, "Some String")
+  _AFT.assertStrContains(responseJ.request.status, "success")
 end
 
 function _callbackError(responseJ)
-  _AFT.assertStrContains(responseJ.request.info, "Ping Binder Daemon fails")
-end
-function _callbackEvent(eventName, eventData)
-  _AFT.assertEquals(eventData, { key = 'weird others data', another_key = 123.456 })
+  _AFT.assertStrContains(responseJ.request.info, "verb pingfail unknown within api helloworld")
 end
 
-_AFT.addEventToMonitor("hello/anEvent")
-_AFT.addEventToMonitor("hello/anotherEvent", _callbackEvent)
-
-_AFT.testVerbStatusSuccess('testPingSuccess','hello', 'ping', {})
+_AFT.testVerbStatusSuccess('testPingSuccess','helloworld', 'ping', {})
 _AFT.setBefore("testPingSuccess",function() print("~~~~~ Begin testPingSuccess ~~~~~") end)
 _AFT.setAfter("testPingSuccess",function() print("~~~~~ End testPingSuccess ~~~~~") end)
 
-_AFT.testVerbResponseEquals('testPingSuccessAndResponse','hello', 'ping', {}, "Some String")
-_AFT.testVerbCb('testPingSuccessCallback','hello', 'ping', {}, _callback)
+_AFT.testVerbResponseEquals('testPingSuccessAndResponse','helloworld', 'ping', {}, "Ping count = %d")
+_AFT.testVerbCb('testPingSuccessCallback','helloworld', 'ping', {}, _callback)
 
-_AFT.testVerbStatusError('testPingError', 'hello', 'pingfail', {})
-_AFT.testVerbResponseEqualsError('testPingErrorAndResponse', 'hello', 'pingfail', {}, "Ping Binder Daemon succeeds")
-_AFT.testVerbCbError('testPingErrorCallback', 'hello', 'pingfail', {}, _callbackError)
-
-_AFT.testVerbStatusSuccess('testEventAddanEvent', 'hello', 'eventadd', {tag = 'event', name = 'anEvent'})
-_AFT.testVerbStatusSuccess('testEventSubanEvent', 'hello', 'eventsub', {tag = 'event'})
-_AFT.testVerbStatusSuccess('testEventPushanEvent', 'hello', 'eventpush', {tag = 'event', data = { key = 'some data', another_key = 123}})
-
-_AFT.testVerbStatusSuccess('testEventAddanotherEvent', 'hello', 'eventadd', {tag = 'evt', name = 'anotherEvent'})
-_AFT.testVerbStatusSuccess('testEventSubanotherEvent', 'hello', 'eventsub', {tag = 'evt'})
-_AFT.testVerbStatusSuccess('testEventPushanotherEvent', 'hello', 'eventpush', {tag = 'evt', data = { key = 'weird others data', another_key = 123.456}})
-
-_AFT.testVerbStatusSuccess('testGenerateWarning', 'hello', 'verbose', {level = 4, message = 'My Warning message!'})
-
-_AFT.testEvtGrpReceived("testEventGroupReceived",{["hello/anEvent"]=1,["hello/anotherEvent"]=1})
-
-_AFT.testEvtReceived("testanEventReceived", "hello/anEvent")
-_AFT.testEvtReceived("testanotherEventReceived", "hello/anotherEvent")
+_AFT.testVerbStatusError('testPingError', 'helloworld', 'pingfail', {})
+_AFT.testVerbResponseEqualsError('testPingErrorAndResponse', 'helloworld', 'pingfail', {}, "Ping Binder Daemon succeeds")
+_AFT.testVerbCbError('testPingErrorCallback', 'helloworld', 'pingfail', {}, _callbackError)
