@@ -119,7 +119,7 @@ static const afb_verb_t verbs[] = {
 };
 
 const afb_binding_t afbBindingExport = {
-	.api = "helloworld",
+	.api = "helloworld-event",
 	.specification = NULL,
 	.verbs = verbs,
 	.preinit = NULL,

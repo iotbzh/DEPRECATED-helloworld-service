@@ -1,0 +1,22 @@
+{
+    "id": "http://iot.bzh/download/public/schema/json/ctl-schema.json#",
+    "$schema": "http://iot.bzh/download/public/schema/json/ctl-schema.json#",
+    "metadata": {
+        "uid": "Hello_Test",
+        "version": "1.0",
+        "api": "aft-agl-helloworld",
+        "info": "Test part of Helloworld service binding",
+        "require": [
+            "helloworld"
+        ]
+    },
+    "testVerb": {
+        "uid": "testing-hello",
+        "info": "Launch the tests against hello api",
+        "action": "lua://AFT#_launch_test",
+        "args": {
+            "trace": "hello",
+            "files": ["helloworld.lua"]
+        }
+    }
+}
