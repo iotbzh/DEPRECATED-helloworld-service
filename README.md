@@ -1,4 +1,6 @@
-# helloworld-service
+# helloworld-service [DEPRECATED]
+
+Now on [gerrit](https://gerrit.automotivelinux.org/gerrit/apps/agl-service-helloworld)
 
 A binding example for AGL
 
