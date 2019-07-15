@@ -1,6 +1,8 @@
 # helloworld-service [DEPRECATED]
 
-Now on [gerrit](https://gerrit.automotivelinux.org/gerrit/apps/agl-service-helloworld)
+**Now on [https://gerrit.automotivelinux.org/gerrit/gitweb?p=apps/agl-service-helloworld.git;a=summary](https://gerrit.automotivelinux.org/gerrit/gitweb?p=apps/agl-service-helloworld.git;a=summary)**
+
+** Code in this repo and all above inscrutions are no longer maintained.**
 
 A binding example for AGL
 
