@@ -2,7 +2,7 @@
 
 **Now on [https://gerrit.automotivelinux.org/gerrit/gitweb?p=apps/agl-service-helloworld.git;a=summary](https://gerrit.automotivelinux.org/gerrit/gitweb?p=apps/agl-service-helloworld.git;a=summary)**
 
-** Code in this repo and all above inscrutions are no longer maintained.**
+**Code in this repo and all above inscrutions are no longer maintained.**
 
 A binding example for AGL
 
